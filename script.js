@@ -112,4 +112,45 @@ const playSong = (id) => {
     playButton.classList.remove("playing");
     audio.pause();
   };
- 
+  // Play the next song in the playlist
+  const playNextSong = () => {
+    if (userData?.currentSong === null) {
+      playSong(userData?.songs[0].id);
+    } else {
+      const currentSongIndex = getCurrentSongIndex();
+      const nextSong = userData?.songs[currentSongIndex + 1];
+  
+      playSong(nextSong.id);
+    }
+  };
+  
+  const playPreviousSong = () =>{
+     if (userData?.currentSong === null) return;
+     else {
+      const currentSongIndex = getCurrentSongIndex();
+      const previousSong = userData?.songs[currentSongIndex - 1];
+  
+      playSong(previousSong.id);
+     }
+  };
+  // Shuffle the playlist
+  const shuffle = () => {
+    userData?.songs.sort(() => Math.random() - 0.5);
+    userData.currentSong = null;
+    userData.songCurrentTime = 0;
+  
+    renderSongs(userData?.songs);
+    pauseSong();
+    setPlayerDisplay();
+    setPlayButtonAccessibleText();
+  };
+  // Delete a song from the playlist
+  const deleteSong = (id) => {
+    if (userData?.currentSong?.id === id) {
+      userData.currentSong = null;
+      userData.songCurrentTime = 0;
+  
+      pauseSong();
+      setPlayerDisplay();
+    }
+   
